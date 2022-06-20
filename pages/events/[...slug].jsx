@@ -4,24 +4,10 @@ import EventList from "../../components/events/event-list";
 import ResultsTitle from "../../components/events/results-title";
 import Button from "../../components/ui/button";
 import ErrorAlert from "../../components/ui/error-alert";
-import { getFilteredEvents } from "../../dummy-data";
+import { getFilteredEvents } from "../../helpers/api-utils";
 
-function FilteredEventsPage() {
-  const filterData = useRouter().query.slug;
-
-  if (!filterData) return <p className="center">Loading...</p>;
-
-  const numYear = +filterData[0];
-  const numMonth = +filterData[1];
-
-  if (
-    isNaN(numMonth) ||
-    isNaN(numYear) ||
-    numYear > 2030 ||
-    numYear < 2021 ||
-    numMonth < 1 ||
-    numMonth > 12
-  ) {
+function FilteredEventsPage({ date, filteredEvents, hasError }) {
+  if (hasError) {
     return (
       <React.Fragment>
         <ErrorAlert>Invalid Filter. Please adjust your values!</ErrorAlert>
@@ -31,11 +17,6 @@ function FilteredEventsPage() {
       </React.Fragment>
     );
   }
-
-  const filteredEvents = getFilteredEvents({
-    year: numYear,
-    month: numMonth,
-  });
 
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
@@ -48,14 +29,45 @@ function FilteredEventsPage() {
     );
   }
 
-  const date = new Date(numYear, numMonth - 1);
-
   return (
     <React.Fragment>
-      <ResultsTitle date={date} />
+      <ResultsTitle date={JSON.parse(date)} />
       <EventList items={filteredEvents} />
     </React.Fragment>
   );
 }
 
 export default FilteredEventsPage;
+
+export async function getServerSideProps(context) {
+  const { params } = context;
+  const filterData = params.slug;
+
+  const numYear = +filterData[0];
+  const numMonth = +filterData[1];
+
+  if (
+    isNaN(numMonth) ||
+    isNaN(numYear) ||
+    numYear > 2030 ||
+    numYear < 2021 ||
+    numMonth < 1 ||
+    numMonth > 12
+  ) {
+    return {
+      props: { hasError: true },
+    };
+  }
+
+  const filteredEvents = await getFilteredEvents({
+    year: numYear,
+    month: numMonth,
+  });
+
+  return {
+    props: {
+      filteredEvents,
+      date: JSON.stringify(new Date(numYear, numMonth - 1)),
+    },
+  };
+}
