@@ -1,8 +1,8 @@
+import Head from "next/head";
 import React from "react";
 import EventContent from "../../components/event-detail/event-content";
 import EventLogistics from "../../components/event-detail/event-logistics";
 import EventSummary from "../../components/event-detail/event-summary";
-import ErrorAlert from "../../components/ui/error-alert";
 import { getEventById, getFeaturedEvents } from "../../helpers/api-utils";
 
 function EventDetailPage({ event }) {
@@ -10,6 +10,10 @@ function EventDetailPage({ event }) {
 
   return (
     <React.Fragment>
+      <Head>
+        <title>{event.title}</title>
+        <meta name="description" content={event.description} />
+      </Head>
       <EventSummary title={event.title} />
       <EventLogistics
         date={event.date}
