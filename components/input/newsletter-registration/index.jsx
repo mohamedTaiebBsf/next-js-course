@@ -9,7 +9,7 @@ function NewsletterRegistration() {
 
     fetch("/api/newsletter", {
       method: "POST",
-      data: JSON.stringify({ email: emailRef.current.value }),
+      body: JSON.stringify({ email: emailRef.current.value }),
       headers: {
         "Content-Type": "application/json",
       },
