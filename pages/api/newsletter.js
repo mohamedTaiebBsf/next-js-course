@@ -12,9 +12,9 @@ async function handler(req, res) {
       "mongodb+srv://root:root@nextjscluster.3kek9.mongodb.net/?retryWrites=true&w=majority"
     );
 
-    const db = client.db("newsletter");
+    const db = client.db("events");
 
-    await db.collection("emails").insertOne({ email: userEmail });
+    await db.collection("newsletter").insertOne({ email: userEmail });
 
     client.close();
 
