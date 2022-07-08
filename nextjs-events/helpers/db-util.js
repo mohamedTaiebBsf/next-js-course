@@ -3,9 +3,7 @@ import { MongoClient } from "mongodb";
 let db;
 
 export async function connectDatabase() {
-  const client = await MongoClient.connect(
-    "mongodb+srv://root:root@nextjscluster.3kek9.mongodb.net/?retryWrites=true&w=majority"
-  );
+  const client = await MongoClient.connect(process.env.MONGO_DB);
 
   db = client.db("events");
 

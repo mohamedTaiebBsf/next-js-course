@@ -1,5 +1,5 @@
 export const API_URL =
-  "https://nextjs-course-393a9-default-rtdb.firebaseio.com";
+  process.env.FIREBASE_API_URL || process.env.NEXT_PUBLIC_FIREBASE_API_URL;
 
 export async function getAllEvents() {
   const response = await fetch(API_URL + "/events.json");
