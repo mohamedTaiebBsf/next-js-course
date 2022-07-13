@@ -1,4 +1,6 @@
-function handler(req, res) {
+import { MongoClient } from "mongodb";
+
+async function handler(req, res) {
   if (req.method === "POST") {
     const { email, name, message } = req.body;
 
@@ -20,7 +22,27 @@ function handler(req, res) {
       message,
     };
 
-    console.log(newMessage);
+    const client = new MongoClient(process.env.MONGODB_URL);
+
+    try {
+      await client.connect();
+    } catch (error) {
+      res.status(500).json({ message: "Could not connect to database." });
+      return;
+    }
+
+    const db = client.db("blog");
+
+    try {
+      const result = await db.collection("messages").insertOne(newMessage);
+      newMessage.id = result.insertedId;
+    } catch (error) {
+      client.close();
+      res.status(500).json({ message: "Storing message failed!" });
+      return;
+    }
+
+    client.close();
 
     res
       .status(201)
