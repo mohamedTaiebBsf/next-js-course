@@ -4,7 +4,6 @@ import Hero from "../components/home-page/hero";
 import { getFeaturedPosts } from "../lib/posts-util";
 
 function HomePage({ posts }) {
-  console.log(posts);
   return (
     <React.Fragment>
       <Hero />
