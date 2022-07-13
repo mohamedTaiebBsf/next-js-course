@@ -1,7 +1,17 @@
+import Head from "next/head";
+import React from "react";
 import ContactForm from "../components/contact-form";
 
 function ContactPage() {
-  return <ContactForm />;
+  return (
+    <React.Fragment>
+      <Head>
+        <title>Contact Me</title>
+        <meta name="description" content="Send me your messages!" />
+      </Head>
+      <ContactForm />
+    </React.Fragment>
+  );
 }
 
 export default ContactPage;

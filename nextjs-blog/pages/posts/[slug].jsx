@@ -1,8 +1,18 @@
+import Head from "next/head";
+import React from "react";
 import PostContent from "../../components/posts/post-detail/post-content";
 import { getPostData, getPostsFiles } from "../../lib/posts-util";
 
 function PostDetailPage({ post }) {
-  return <PostContent post={post} />;
+  return (
+    <React.Fragment>
+      <Head>
+        <title>{post.title}</title>
+        <meta name="description" content={post.excerpt} />
+      </Head>
+      <PostContent post={post} />
+    </React.Fragment>
+  );
 }
 
 export default PostDetailPage;
