@@ -1,4 +1,4 @@
-import { signIn } from "next-auth/client";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import classes from "./styles.module.css";
